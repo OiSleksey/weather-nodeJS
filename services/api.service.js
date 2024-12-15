@@ -32,8 +32,9 @@ import axios from 'axios'
 // }
 
 //https axios
-const getWeather = async (city) => {
+const getWeather = async () => {
   const token = process.env.TOKEN ?? (await getKeyValue(TOKEN_DICTIONARY.token))
+  const city = await getKeyValue(TOKEN_DICTIONARY.city)
   if (!token.length) {
     throw new Error('Not found key API_KEY. Please set API_KEY via comand -t [API_KEY]')
   }
@@ -56,4 +57,14 @@ const getWeather = async (city) => {
   // }
 }
 
-export { getWeather }
+const getNameValue = async (key) => {
+  try {
+    const name = await getKeyValue(TOKEN_DICTIONARY?.[key])
+    if (name) return name
+    throw new Error(`Not found ${key}`)
+  } catch (e) {
+    throw new Error(`Not found ${key}`)
+  }
+}
+
+export { getWeather, getNameValue }
